@@ -21,6 +21,10 @@ class ProjectStructure:
                             help='Enter Absolute Path to Project Folder')
         parser.add_argument('-o', '--output', type=str, const=True, nargs='?', default='project_structure',
                             help='Enter (Absolute Path)? to file name for output/project structure markdown')
+        parser.add_argument('-id', '--i_directory', type=str, const=True, nargs='?', default='',
+                            help='Enter directories to be ignored comma delimited')
+        parser.add_argument('-ie', '--i_extension', type=str, const=True, nargs='?', default='',
+                            help='Enter extensions to be ignored, comma delimited as .svg')
         return parser.parse_args()
 
     def explore_first_directory(self, _dir):
@@ -78,12 +82,12 @@ class ProjectStructure:
             elts for elts in folders if elts not in self.git_ignore and not elts.startswith(".")]
         _folders = []
         for elts in folders:
-            flag=0
+            flag = 0
             for ends in self.git_ignore_astrik:
                 if elts.endswith(ends):
-                    flag=1
+                    flag = 1
                     break
-            if flag==0:
+            if flag == 0:
                 _folders.append(elts)
         return _folders
 
@@ -97,8 +101,13 @@ class ProjectStructure:
         # removing comments and new line and stirping
         self.git_ignore = [elt.strip().strip('\n').strip(
             '\t').strip("/") for elt in git_ignore if not elt.startswith("#") and not elt.startswith("\n")]
+        self.git_ignore += [elt.strip()
+                            for elt in self.args.i_directory.split(",")]
         self.git_ignore_astrik = [elt[1:].strip().strip("\n").strip("/")
                                   for elt in git_ignore if elt.startswith("*")]
+        if not self.args.i_extension == '':
+            self.git_ignore_astrik += [elt.strip()
+                                       for elt in self.args.i_extension.split(",")]
         return
 
     def main(self):
