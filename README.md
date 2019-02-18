@@ -6,3 +6,8 @@ python3 project-s.py -s <absolute_path_to_project> -o <absolute_path_to_ouput_fi
 ```
 
 The script automatically intakes the .gitignore file rules and parses it to ignore the pre-exisiting rules in git-ignore
+
+Example :
+```sh
+python3 project-s.py -s "/home/user/project-new" -ie .svg,.png,.jpg,.js,.css -id static
+```
