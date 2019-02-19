@@ -147,14 +147,17 @@ class ProjectStructure:
         f = open(self.args.output, 'w')
         f.write(self.vertical[0][0]+"\n")
         for idx in range(len(self.vertical[1:])):
-            for elt in self.vertical[idx][:-2]:
+            for elt in self.vertical[idx+1][:-2]:
                 f.write("|")
                 f.write("   ")
-            if len(self.vertical[idx]) > len(self.vertical[idx+1]):
+            try:
+                if len(self.vertical[idx+1]) > len(self.vertical[idx+2]):
+                    f.write("└──")
+                else:
+                    f.write("├──")
+            except:
                 f.write("└──")
-            else:
-                f.write("├──")
-            f.write(self.vertical[idx][-1:][0]+"\n")
+            f.write(self.vertical[idx+1][-1:][0]+"\n")
 
 
 if __name__ == '__main__':
